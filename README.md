@@ -74,16 +74,7 @@ server.send(bundle, client);
 
 or
 
-```javascript
-var message = new osc.Message('/foo/bar');
-message.add('hello');
-message.add('bonjour');
-```
 
-### Bundle syntax
-
-Bundle is also available.
-It can be used almost same as Message.
 ```javascript
 var msg1 = new osc.Message('/foo/bar', 1)
   , msg2 = new osc.Message('/baz/qux', 2);
