@@ -8,10 +8,12 @@ Module Dependencies
 -------------------
 
 -    [socket.io](https://github.com/LearnBoost/Socket.IO)  
+-    [express](https://github.com/visionmedia/express) (for the example app)
   
 Usage
 -----
 ### Basically:
+
 ```javascript
 // import module
 var osc = require('osc4node');
@@ -52,6 +54,7 @@ new osc.Message('/foo/bar', 'hello', 123, 4.5);
 ```
 
 Osc message also has __add()__ method.
+
 ```javascript
 var message = new osc.Message('/foo/bar');
 message.add('hello');
