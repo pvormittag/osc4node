@@ -1,0 +1,19 @@
+{
+    "name": "node4osc"
+  , "description": "OpenSoundControl implementation for node"
+  , "version": "0.1"
+  , "author": "Hideyuki Saito <info@hideyukisaito.com>"
+  , "dependencies" : {
+        "socket.io >=0.6"
+    }
+  , "licenses": [{
+        "type": "MIT"
+      , "url": "http://github.com/hideyukisaito/osc4node/blob/master/README.md"
+    }]
+  , "repository": {
+        "type": "git"
+      , "url": "http://github.com/hideyukisaito/osc4node.git"
+    }
+  , "engine": [ "node >=0.47" ]
+  , "main": "./index"
+}
