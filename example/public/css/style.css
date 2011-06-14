@@ -24,8 +24,8 @@ h3 { font-size: 1.1em; }
 }
 .gui .gui-group {
    width: 250px;
-   min-height: 150px;
-   margin-bottom: 20px;
+   min-height: 120px;
+   margin-bottom: 15px;
 }
 .gui .gui-group > div {
    float: right;
@@ -57,24 +57,30 @@ h3 { font-size: 1.1em; }
    text-align: right;
 }
 
-#matrix-demo {
+.matrix-demo {
    width: 250px;
    height: auto;
 }
-#matrix-demo input[type="checkbox"] {
+.matrix-demo input[type="checkbox"] {
    display: block;
    float: left;
-   width: 48px;
-   height: 48px;
+   width: 29px;
+   height: 29px;
    margin: 1px;
    -webkit-appearance: none;
    border: 1px solid #adadad;
    background-color: white;
 }
-#matrix-demo input[type="text"] {
-   
-}
 
+.slider:hover, .matrix-demo input[type="checkbox"]:hover {
+    cursor: pointer;
+}
+.matrix-demo input[type="checkbox"]:checked {
+    background-color: #fff;
+}
+.matrix-demo input[type="checkbox"]:checked {
+    background-color: #dbb646;
+}
 .gui.config { width: 160px; }
 .gui.config .gui-group {
    min-height: 10px;

@@ -7,38 +7,36 @@ var express = require('express')
 var app = express.createServer();
 
 app.configure(function(){
-  app.set('views', __dirname + '/views');
-  app.set('view engine', 'jade');
-  app.use(express.bodyParser());
-  app.use(express.methodOverride());
-  app.use(app.router);
-  app.use(express.static(__dirname + '/public'));
+    app.set('views', __dirname + '/views');
+    app.set('view engine', 'jade');
+    app.use(express.bodyParser());
+    app.use(express.methodOverride());
+    app.use(app.router);
+    app.use(express.static(__dirname + '/public'));
 });
 
 app.configure('development', function(){
-  app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
+    app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
 });
 
 app.configure('production', function(){
-  app.use(express.errorHandler()); 
+    app.use(express.errorHandler()); 
 });
 
 app.get('/', function(req, res){
-  res.render('index', {
-    title: 'node4osc client demo'
-  });
+    res.render('index', {
+        title: 'node4osc client demo'
+    });
 });
 
 app.listen(3000, 'localhost');
-console.log("Express server listening on port %d", app.address().port);
+console.log("----------------- Express server listening on port %d -----------------", app.address().port);
 
 
 /***********************************************************/
 
-// OscServer and OscClient is just defined here.
-// create the socket for communicating to the browser.
-var OscServer
-  , OscClient
+var oscServer
+  , oscClient
   , socket = io.listen(app);
 
 // bind callbacks.
@@ -46,51 +44,49 @@ socket.on('connection', function(client){
     client.broadcast({ info: client.sessionId + ' connected' });
     
     client.on('message', function(obj) {
-        // in this example, first browser-client sends a configuration object.
+        
+        // in this example, server receives config object from browser-client at first.
         // it contains 'port' and 'host' settings for Server and Client.
         if ('config' in obj) {
             var config = obj.config;
-            OscServer = new osc.Server(config.server.port, config.server.host);
-            OscClient = new osc.Client(config.client.host, config.client.port);
-            client.send({ info: 'OscServer created: [port: ' + OscServer.port + ', host: ' + OscServer.host + ']' });
-            client.send({ info: 'OscClient created: [port: ' + OscClient.port + ', host: ' + OscClient.host + ']' });
+            oscServer = new osc.Server(config.server.port, config.server.host);
+            oscClient = new osc.Client(config.client.host, config.client.port);
             
-            var message = new osc.Message('/status', client.sessionId + ' connected');
-            OscServer.send(message, OscClient);
+            client.send({ info: 'oscServer created: [port: ' + oscServer.port + ', host: ' + oscServer.host + ']' });
+            client.send({ info: 'oscClient created: [port: ' + oscClient.port + ', host: ' + oscClient.host + ']' });
             
-            // OscServer dispatches 'oscmessage' event when receives the message.
+            var msg = new osc.Message('/status', client.sessionId + ' connected');
+            oscServer.send(msg, oscClient);
+            
+            // oscServer dispatches 'oscmessage' event when receives the message.
             // so we attach handler on the event for global message handling.
-            OscServer.on('oscmessage', function(msg) {
-                // check message address pattern.
-                if (msg.checkAddrPattern('/lp/matrix')) {
-                    // and check message typetag.
-                    if (msg.checkTypetag('iii')) {
-                        client.send({
-                            oscmessage: {
-                                address: msg.address,
-                                typetags: msg.typetags,
-                                args: msg.args
-                            }
-                        });
+            oscServer.on('oscmessage', function(msg, rinfo) {
+                console.log(msg);
+                client.send({
+                    oscmessage: {
+                        address: msg.address
+                      , typetag: msg.typetag
+                      , args: msg.arguments
                     }
-                }
+                });
             });
         } else if ('oscmessage' in obj) {
-            console.log(obj.oscmessage);
             var msg = obj.oscmessage;
-            // Bundle is now available.
-            var bundle   = new osc.Bundle(),
-                message1 = new osc.Message(msg.address, msg.message),
-                message2 = new osc.Message('/status', 'from ' + client.sessionId + ' at ' + new Date().toString());
+            
+            // create Bundle
+            var bundle   = new osc.Bundle()
+              , msg1 = new osc.Message(msg.address, msg.message)
+              , msg2 = new osc.Message('/status', 'from ' + client.sessionId + ' at ' + new Date().toString());
             
             // to bundle messages, simply call 'add()' with instance of the Message.
-            bundle.add(message1);
-            bundle.add(message2);
+            bundle.add(msg1);
+            bundle.add(msg2);
+            
             // set timetag.
             bundle.setTimetag(bundle.now());
             
             // we can send Bundle in the same way as Message.
-            OscServer.send(bundle, OscClient);
+            if (oscServer && oscClient) oscServer.send(bundle, oscClient);
         }
     });
     

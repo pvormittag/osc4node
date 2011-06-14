@@ -1,5 +1,5 @@
 $(function() {
-    // create the socket to the local OSC server
+    // create the socket for the local OSC server
     var socket = new io.Socket("localhost", { port: 3000, rememberTransport: false });
     
     // bind callbacks for each events.
@@ -9,19 +9,37 @@ $(function() {
     
     socket.on('message', function(obj) {
         if ('oscmessage' in obj) {
-            var msg = obj.oscmessage;
-            notify('Incoming message: ' + "\n" +
-                   'address: '+ msg.address + "\n" +
-                   'args: ' + msg.args);
+            var msg = obj.oscmessage
+              , addr = msg.address
+              , args = msg.args
+              , paprent;
             
+            if (addr.match(/slider/i)) {
+                var slider = addr[addr.length - 1] == 'i'
+                        ? $('#receive .slider.int')
+                        : $('#receive .slider.float');
+                slider.val(args[0].value);
+                
+                paprent = slider.parent();
+                paprent.find('.addr').val(addr);
+                paprent.find('.numbox').val(args[0].value);
+                paprent.find('.output').val(addr + ' ' + args[0].value);
+            } else if (addr.match(/matrix/i)) {
+                var mat = $('#r' + args[0].value + args[1].value);
+                mat.attr('checked', args[2].value == 0 ? false : true);
+                
+                paprent = mat.parent().parent();
+                paprent.find('.addr').val(addr);
+                paprent.find('.numbox').val(args[0].value);
+                paprent.find('.output').val(addr + ' ' + args[0].value + ' ' + args[1].value + ' ' + args[2].value);
+            }
             switch (msg.address) {
-                case '/lp/matrix':
-                    $('#c' + msg.args[0].value + msg.args[1].value)
+                case '/max/matrix':
+                    $('#r' + msg.args[0].value + msg.args[1].value)
                         .attr('checked', msg.args[2].value == 0 ? false : true);
-                    console.log($('#c' + msg.args[0].value + msg.args[1].value).attr('checked'));
                     break;
                 default:
-                break;
+                    break;
             }
         } else if ('info' in obj) {
             notify(obj.info);
@@ -53,36 +71,39 @@ $(function() {
             });
         }
     });
-    $('.slider').change(function(e) {
-        var addr = $(this).siblings().children('.addr').val()
-          , val  = $(this).val();
-        $(this).siblings().children('.numbox').val(val);
-        $(this).siblings().children('.output').val(addr + ' ' + val);
+    $('#send .slider').change(function(e) {
+        var self = $(this)
+          , addr = self.siblings().children('.addr').val()
+          , val  = self.val();
+        self.siblings().children('.numbox').val(val);
+        self.siblings().children('.output').val(addr + ' ' + val);
         
         if (socket.connected) {
+            val = Math.floor(Number(val)) == val ? parseInt(val) : parseFloat(val);
             socket.send({
                 oscmessage: {
                     address: addr,
-                    message: parseInt(val)
+                    message: val
                 }
             });
         }
     });
-    $('#matrix-demo input').change(function(e) {
-        var addr = $(this).parent().siblings().children('.addr').val()
+    $('#send').find('.matrix-demo input').change(function(e) {
+        var self = $(this)
+          , addr = self.parent().siblings().children('.addr').val()
           , checked = e.target.checked == true ? 1 : 0
-          , id = $(this).attr('id')
-          , val = id[0] + ' ' + id[1] + ' ' + checked;
+          , id = self.attr('id')
+          , val = id[1] + ' ' + id[2] + ' ' + checked;
         console.log(val);
-        $(this).css('backgroundColor', checked ? '#dbb646' : '#fff');
-        $(this).parent().siblings().children('.numbox').val(val);
-        $(this).parent().siblings().children('.output').val(addr + ' ' + val);
+        //self.css('backgroundColor', checked ? '#dbb646' : '#fff');
+        self.parent().siblings().children('.numbox').val(val);
+        self.parent().siblings().children('.output').val(addr + ' ' + val);
         
         if (socket.connected) {
             socket.send({
                 oscmessage: {
                     address: addr,
-                    message: [parseInt(id[0]), parseInt(id[1]), checked]
+                    message: [parseInt(id[1]), parseInt(id[2]), checked]
                 }
             });
         }

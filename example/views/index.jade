@@ -23,43 +23,76 @@
         
       input(type='button', id='submit', value='configure')
     
-    .gui.send
+    #send.gui
       h2 Send
-      #slider-demo.gui-group
-        h3 [Send]
-        input(type='range', min='0', max='127', value='0').slider.maxgui
+      .gui-group
+        h3 [Int]
+        input(type='range', min='0', max='127', value='0').slider.int.maxgui
         div address:
-          input(type='text', name='addr', value='/node/slider').addr.maxgui
+          input(type='text', name='addr', value='/node/slider/i').addr.maxgui
         div value:
           input(type='text', value='0', readonly).numbox.maxgui
-        div output:
+        div message:
+          input(type='text', value='', readonly).output.maxgui
+          
+      .gui-group
+        h3 [Float]
+        input(type='range', min='0', max='127', step='0.01', value='0').slider.float.maxgui
+        div address:
+          input(type='text', name='addr', value='/node/slider/f').addr.maxgui
+        div value:
+          input(type='text', value='0', readonly).numbox.maxgui
+        div message:
           input(type='text', value='', readonly).output.maxgui
         
-      #matrix-demo.gui-group
+        
+      .matrix-demo.gui-group
         h3 [Matrix]
         div
-          input(type='checkbox')#00
-          input(type='checkbox')#01
-          input(type='checkbox')#02
-          input(type='checkbox')#03
-          input(type='checkbox')#04
-          input(type='checkbox')#11
-          input(type='checkbox')#12
-          input(type='checkbox')#13
-          input(type='checkbox')#14
-          input(type='checkbox')#15
+          input(type='checkbox')#s00
+          input(type='checkbox')#s10
+          input(type='checkbox')#s20
+          input(type='checkbox')#s30
+          input(type='checkbox')#s40
+          input(type='checkbox')#s50
+          input(type='checkbox')#s60
+          input(type='checkbox')#s70
+          input(type='checkbox')#s01
+          input(type='checkbox')#s11
+          input(type='checkbox')#s21
+          input(type='checkbox')#s31
+          input(type='checkbox')#s41
+          input(type='checkbox')#s51
+          input(type='checkbox')#s61
+          input(type='checkbox')#s71
+          input(type='checkbox')#s02
+          input(type='checkbox')#s12
+          input(type='checkbox')#s22
+          input(type='checkbox')#s32
+          input(type='checkbox')#s42
+          input(type='checkbox')#s52
+          input(type='checkbox')#s62
+          input(type='checkbox')#s72
+          input(type='checkbox')#s03
+          input(type='checkbox')#s13
+          input(type='checkbox')#s23
+          input(type='checkbox')#s33
+          input(type='checkbox')#s43
+          input(type='checkbox')#s53
+          input(type='checkbox')#s63
+          input(type='checkbox')#s73
         div address:
           input(type='text', name='addr', value='/node/matrix').addr.maxgui
         div value:
           input(type='text', value='0', readonly).numbox.maxgui
-        div output:
+        div message:
           input(type='text', value='', readonly).output.maxgui
       
-    .gui.reveive
+    #receive.gui
       h2 Receive
-      #slider-demo.gui-group
-        h3 [Send]
-        input(type='range', min='0', max='127', value='0', disabled).slider.maxgui
+      .gui-group
+        h3 [Int]
+        input(type='range', min='0', max='127', value='0', disabled).slider.int.maxgui
         div address:
           input(type='text', name='addr', value='/node/slider', readonly).addr.maxgui
         div value:
@@ -67,19 +100,51 @@
         div output:
           input(type='text', value='', readonly).output.maxgui
         
-      #matrix-demo.gui-group
+      .gui-group
+        h3 [Float]
+        input(type='range', min='0', max='127', step='0.01', value='0', disabled).slider.float.maxgui
+        div address:
+          input(type='text', name='addr', value='/node/slider/f').addr.maxgui
+        div value:
+          input(type='text', value='0', readonly).numbox.maxgui
+        div message:
+          input(type='text', value='', readonly).output.maxgui
+        
+      .matrix-demo.gui-group
         h3 [Matrix]
         div
-          input(type='checkbox', disabled)#00
-          input(type='checkbox', disabled)#01
-          input(type='checkbox', disabled)#02
-          input(type='checkbox', disabled)#03
-          input(type='checkbox', disabled)#04
-          input(type='checkbox', disabled)#11
-          input(type='checkbox', disabled)#12
-          input(type='checkbox', disabled)#13
-          input(type='checkbox', disabled)#14
-          input(type='checkbox', disabled)#15
+          input(type='checkbox')#r00
+          input(type='checkbox')#r10
+          input(type='checkbox')#r20
+          input(type='checkbox')#r30
+          input(type='checkbox')#r40
+          input(type='checkbox')#r50
+          input(type='checkbox')#r60
+          input(type='checkbox')#r70
+          input(type='checkbox')#r01
+          input(type='checkbox')#r11
+          input(type='checkbox')#r21
+          input(type='checkbox')#r31
+          input(type='checkbox')#r41
+          input(type='checkbox')#r51
+          input(type='checkbox')#r61
+          input(type='checkbox')#r71
+          input(type='checkbox')#r02
+          input(type='checkbox')#r12
+          input(type='checkbox')#r22
+          input(type='checkbox')#r32
+          input(type='checkbox')#r42
+          input(type='checkbox')#r52
+          input(type='checkbox')#r62
+          input(type='checkbox')#r72
+          input(type='checkbox')#r03
+          input(type='checkbox')#r13
+          input(type='checkbox')#r23
+          input(type='checkbox')#r33
+          input(type='checkbox')#r43
+          input(type='checkbox')#r53
+          input(type='checkbox')#r63
+          input(type='checkbox')#r73
         div address:
           input(type='text', name='addr', value='/node/matrix', readonly).addr.maxgui
         div value:
