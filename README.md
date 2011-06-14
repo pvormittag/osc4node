@@ -9,7 +9,14 @@ Module Dependencies
 
 -    [socket.io](https://github.com/LearnBoost/Socket.IO)  
 -    [express](https://github.com/visionmedia/express) (for the example app)
-  
+
+Installation
+------------
+
+```
+npm install osc4node
+```
+
 Usage
 -----
 ### Basically:
