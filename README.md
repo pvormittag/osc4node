@@ -33,6 +33,7 @@ You may find more usage in **./example/app.js**
 
 Simply pass the *address* and an argument.
 Any String or Number(int/float) are allowed.
+
 ```javascript 
 new osc.Message('/foo/bar', 'hello'); // string
 new osc.Message('/foo/bar', 12345); // int
@@ -41,6 +42,7 @@ new osc.Message('/foo/bar', 123.45); // float
 ```
 
 We can pass some arguments using array or multiple value at one time.
+
 ```javascript
 // Array
 new osc.Message('/foo/bar', [1, 2, 3, 4, 5]);
@@ -60,6 +62,7 @@ message.add('bonjour');
 
 Bundle is also available.
 It can be used almost same as Message.
+
 ```javascript
 var msg1 = new osc.Message('/foo/bar', 1)
   , msg2 = new osc.Message('/baz/qux', 2);
