@@ -3,6 +3,7 @@ osc4node
 ----------------------
 
 __osc4node__ is the one of OpenSoundControl protocol implementation for *Node.js*.  
+This library is developed based on [node-osc](http://github.com/termie/node-osc), with more flexible and useful features.
 
 Module Dependencies
 -------------------
@@ -14,7 +15,7 @@ Installation
 ------------
 
 ```
-npm install osc4node
+$ npm install osc4node
 ```
 
 Usage
